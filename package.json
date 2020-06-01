@@ -1,16 +1,17 @@
 {
-  "name": "fms.inventoryservice",
+  "name": "openfms.realtimeservice",
   "version": "1.0.0",
-  "description": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+  "description": "Manage realtime events and last known state",
   "main": "startesm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "port": 5000,
   "repository": {
     "type": "git",
-    "url": "https://etlelectronique.visualstudio.com/Astus%20Garage/_git/fms.InventoryService"
+    "url": "git+https://github.com/marcandregauthier/openfms.RealtimeService.git"
   },
-  "author": "magauthier",
+  "author": "marcgauthier",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.5.6",

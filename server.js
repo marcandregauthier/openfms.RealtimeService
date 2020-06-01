@@ -14,18 +14,18 @@ app.use(bodyParser.json());
 app.use('/', router);
 const database = new mongo();
 
-const port = 5000;
+const port = require('./package.json').port;
 const webServer = app.listen(port, () => {
-    console.log(`Server running on port: ${port}`); 
+    console.log(`${require('./package.json').name}: ${port}`); 
 });
 
-import mq from './mq/receiver';
-import PositionRepository from './repository/position';
+import mq from './pkg/mq/receiver';
+//import PositionRepository from './repository/position';
 
 mq.getInstance()
     .then(broker => {
         broker.subscribe('openfms.position', (msg, ack) => {
-            PositionRepository.add(JSON.parse(msg.content.toString()));
+            //PositionRepository.add(JSON.parse(msg.content.toString()));
             ack();
         });
     });

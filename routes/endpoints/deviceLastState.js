@@ -1,29 +1,76 @@
-﻿import deviceLastStateCache from '../../pkg/deviceLastStateCache';
+﻿import Repository from '../../pkg/repository/generic';
+import Model from '../../model/devicelastState';
 
 
-const get = async (req, res) => {
-    const query =
-        `
-        SELECT TOP 5 AstusSerialNumber, SKU, FleetOwnerID, CreatedDate, CreatedUser
-            FROM Inventory 
-            WHERE AstusSerialNumber >= 3100000 AND AstusSerialNumber < 3500000 AND CreatedDate > '2014-10-20' AND FleetOwnerID IS NOT NULL
-            ORDER BY FleetOwnerID, CreatedDate
-        `;
-    
-    database.query_list(query, (err, records) => {
-        console.log('test 1');
-        // if (err != null) {
-        //     return next(err);
-        // }
-        res.send(records);
+const find = async (request, response) => {
+    console.log('deviceLastState.find: ' + request.body);
+
+    Repository.find(Model, request.params.id)
+        .then(result => {
+            if (result.error) {
+                response.status(400).send(result.error);
+            } else {
+                response.status(200).json(result);
+            }
+        });
+};
+
+
+const get = async (request, response) => {
+    console.log('deviceLastState.get');
+
+    await Repository.get(Model).then(result => {
+        if (result.error) {
+            console.log(`deviceLastState.get failed : ${result.error}`);
+            response.status(500);
+        }
+        else {
+            response.json(result);
+        }
     });
 };
 
-const find = async (req, res) => {
-    let id = req.params.id;
+const add = async (request, response) => {
+    console.log('deviceLastState.add: ' + request.body);
+    request.body.Source = 'DeviceEventService';
 
-    res.send(deviceLastStateCache.find(id));
+    Repository.add(Model, request.body)
+        .then(result => {
+            if (result.error) {
+                console.log(`deviceLastState.add failed : ${result.error}`);
+                response.status(400).send(result.error);
+            } else {
+                response.status(200).json({ '_id': result._id });
+            }
+        });
 };
 
+const update = async (request, response) => {
+    console.log('deviceLastState.update: ' + request.body);
 
-export default { get, find };
+    Repository.update(Model, request.body)
+        .then(result => {
+            if (result.error) {
+                console.log(`deviceLastState.add failed : ${result.error}`);
+                response.status(400).send(result.error);
+            } else {
+                response.status(200).json({ '_id': result._id });
+            }
+        });
+};
+
+const clearAll = async (request, response) => {
+    console.log(`deviceLastState.clearAll`);
+
+    Repository.clearAll(Model)
+        .then(result => {
+            if (result.error) {
+                console.log(`deviceLastState.clearAll failed : ${result.error}`);
+                response.status(500);
+            } else {
+                response.status(200).send();
+            }
+        });
+};
+
+export default { find, get, add, update, clearAll };
