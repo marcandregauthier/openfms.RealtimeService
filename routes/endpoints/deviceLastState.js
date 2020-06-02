@@ -7,7 +7,9 @@ const find = async (request, response) => {
 
     Repository.find(Model, request.params.id)
         .then(result => {
-            if (result.error) {
+            if (!result) {
+                response.status(404).send();
+            } else if (result.error) {
                 response.status(400).send(result.error);
             } else {
                 response.status(200).json(result);
@@ -52,7 +54,7 @@ const update = async (request, response) => {
         .then(result => {
             if (result.error) {
                 console.log(`deviceLastState.add failed : ${result.error}`);
-                response.status(400).send(result.error);
+                response.status(500).send(result.error);
             } else {
                 response.status(200).json({ '_id': result._id });
             }

@@ -6,7 +6,9 @@
 
 let deviceSchema = new mongoose.Schema({
     deviceID:       String,
-    vehicleName:    String
+    vehicleName:    String,
+    Source:      String,
+    CreatedDate: Date
 });
 
 const positionSchema = new mongoose.Schema({

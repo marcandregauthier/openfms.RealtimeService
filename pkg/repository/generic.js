@@ -25,9 +25,15 @@ const get = async (Model) => {
 
 const add = async (Model, jsonEntity) => {
     console.log(`repository.add: ${jsonEntity}`);
-    jsonEntity.CreatedDate = new Date();
-    if (!jsonEntity.Source)
-        jsonEntity.Source = require('../../package.json').name;
+
+    const Now = new Date();
+    jsonEntity.device.CreatedDate = Now;
+    jsonEntity.position.CreatedDate = Now;
+    if (!jsonEntity.Source) {
+        const ProcessName = require('../../package.json').name;
+        jsonEntity.device.Source = ProcessName;
+        jsonEntity.position.Source = ProcessName;
+    }
 
     let model = new Model(jsonEntity);
     return await model.save()
@@ -41,24 +47,17 @@ const add = async (Model, jsonEntity) => {
 
 const update = async (Model, jsonEntity) => {
     console.log(`repository.update: ${jsonEntity}`);
-    jsonEntity.CreatedDate = new Date();
-    if (!jsonEntity.Source)
-        jsonEntity.Source = require('../../package.json').name;
 
-    return await Model.findById(jsonEntity._id, (error, entity) => {
-        if (error) {
-            return add(Model, jsonEntity);
-        } else {
-            let model = new Model(jsonEntity);
-            return model.update()
-                .then(entity => {
-                    return entity;
-                })
-                .catch(error => {
-                    return { error: error };
-                });
-        }
-    });
+    const Now = new Date();
+    jsonEntity.device.CreatedDate = Now;
+    jsonEntity.position.CreatedDate = Now;
+    if (!jsonEntity.Source) {
+        const ProcessName = require('../../package.json').name;
+        jsonEntity.device.Source = ProcessName;
+        jsonEntity.position.Source = ProcessName;
+    }
+
+    return await Model.findOneAndUpdate({ "_id": jsonEntity._id }, jsonEntity, { new: true });
 };
 
 const clearAll = async (Model) => {
