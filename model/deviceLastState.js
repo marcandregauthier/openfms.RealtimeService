@@ -1,14 +1,9 @@
 ﻿import mongoose from 'mongoose';
 
-// import Device from './device';
-// import Position from './position';
-
 
 let deviceSchema = new mongoose.Schema({
     deviceID:       String,
-    vehicleName:    String,
-    Source:      String,
-    CreatedDate: Date
+    vehicleName:    String
 });
 
 const positionSchema = new mongoose.Schema({
@@ -17,14 +12,14 @@ const positionSchema = new mongoose.Schema({
     Longitude:   Number,
     Latitude:    Number,
     Heading:     Number,
-    Speed:       Number,
-    Source:      String,
-    CreatedDate: Date
+    Speed:       Number
 });
 
 const deviceLastStateSchema = new mongoose.Schema({
-    device:     deviceSchema,
-    position:   positionSchema
+    device:      deviceSchema,
+    position:    positionSchema,
+    Source:      String,
+    CreatedDate: Date
 });
 
 

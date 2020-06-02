@@ -39,7 +39,6 @@ const add = async (request, response) => {
     Repository.add(Model, request.body)
         .then(result => {
             if (result.error) {
-                console.log(`deviceLastState.add failed : ${result.error}`);
                 response.status(400).send(result.error);
             } else {
                 response.status(200).json({ '_id': result._id });
@@ -52,8 +51,9 @@ const update = async (request, response) => {
 
     Repository.update(Model, request.body)
         .then(result => {
-            if (result.error) {
-                console.log(`deviceLastState.add failed : ${result.error}`);
+            if (!result) {
+                response.status(404).send();
+            } else if (result.error) {
                 response.status(500).send(result.error);
             } else {
                 response.status(200).json({ '_id': result._id });

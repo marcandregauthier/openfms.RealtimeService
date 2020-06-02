@@ -1,4 +1,4 @@
-﻿import Repository from '../../repository/position';
+﻿//import Repository from '../../repository/position';
 
 
 const receive = async (request, response) => {

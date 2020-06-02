@@ -26,14 +26,9 @@ const get = async (Model) => {
 const add = async (Model, jsonEntity) => {
     console.log(`repository.add: ${jsonEntity}`);
 
-    const Now = new Date();
-    jsonEntity.device.CreatedDate = Now;
-    jsonEntity.position.CreatedDate = Now;
-    if (!jsonEntity.Source) {
-        const ProcessName = require('../../package.json').name;
-        jsonEntity.device.Source = ProcessName;
-        jsonEntity.position.Source = ProcessName;
-    }
+    jsonEntity.CreatedDate = new Date();
+    if (!jsonEntity.Source)
+        jsonEntity.Source = require('../../package.json').name;
 
     let model = new Model(jsonEntity);
     return await model.save()
@@ -48,14 +43,9 @@ const add = async (Model, jsonEntity) => {
 const update = async (Model, jsonEntity) => {
     console.log(`repository.update: ${jsonEntity}`);
 
-    const Now = new Date();
-    jsonEntity.device.CreatedDate = Now;
-    jsonEntity.position.CreatedDate = Now;
-    if (!jsonEntity.Source) {
-        const ProcessName = require('../../package.json').name;
-        jsonEntity.device.Source = ProcessName;
-        jsonEntity.position.Source = ProcessName;
-    }
+    jsonEntity.CreatedDate = new Date();
+    if (!jsonEntity.Source)
+        jsonEntity.Source = require('../../package.json').name;
 
     return await Model.findOneAndUpdate({ "_id": jsonEntity._id }, jsonEntity, { new: true });
 };
